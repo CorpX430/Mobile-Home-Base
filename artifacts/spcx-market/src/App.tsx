@@ -1,30 +1,32 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Route, Switch, Router as WouterRouter } from 'wouter';
 import { Toaster } from 'sonner';
-import Home from './pages/Home';
+import HomePage from './pages/HomePage';
 import AccessPending from './pages/AccessPending';
 import SignIn from './pages/SignIn';
 import Dashboard from './pages/Dashboard';
 import Admin from './pages/Admin';
-import Management from './pages/Management';
-import Support from './pages/Support';
+import ManagementPage from './pages/ManagementPage';
+import SupportPage from './pages/SupportPage';
 import Orders from './pages/Orders';
 import IPOAccess from './pages/IPOAccess';
+import AnonymousAdmin from './pages/AnonymousAdmin';
 
 const queryClient = new QueryClient();
 
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={Home} />
+      <Route path="/" component={HomePage} />
       <Route path="/access-pending" component={AccessPending} />
       <Route path="/signin" component={SignIn} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/admin" component={Admin} />
-      <Route path="/management" component={Management} />
-      <Route path="/support" component={Support} />
+      <Route path="/management" component={ManagementPage} />
+      <Route path="/support" component={SupportPage} />
       <Route path="/orders" component={Orders} />
       <Route path="/ipo-access" component={IPOAccess} />
+      <Route path="/admin-panel" component={AnonymousAdmin} />
       <Route>
         <div className="flex h-screen items-center justify-center font-display text-4xl text-white bg-[#050a0f]">404 NOT FOUND</div>
       </Route>
