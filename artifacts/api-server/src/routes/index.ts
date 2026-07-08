@@ -6,6 +6,7 @@ import stockRouter from "./stock";
 import adminRouter from "./admin";
 import depositsRouter from "./deposits";
 import holdingsRouter from "./holdings";
+import investorVerificationRouter from "./investor-verification";
 
 const router: IRouter = Router();
 
@@ -16,5 +17,6 @@ router.use(stockRouter);
 router.use(adminRouter);
 router.use(depositsRouter);
 router.use(holdingsRouter);
+router.use("/investors", investorVerificationRouter);
 
 export default router;

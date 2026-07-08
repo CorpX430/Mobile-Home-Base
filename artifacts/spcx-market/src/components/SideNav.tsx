@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation, Link } from 'wouter';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Grid, ClipboardList, Bell, Users, Mail, Settings, LogOut, X } from 'lucide-react';
+import { Grid, ClipboardList, Bell, Users, Mail, Settings, LogOut, X, Zap } from 'lucide-react';
 
 interface SideNavProps {
   open: boolean;
@@ -11,6 +11,7 @@ interface SideNavProps {
 
 const navItems = [
   { label: 'Overview', path: '/dashboard', icon: Grid },
+  { label: 'IPO Access', path: '/ipo-access', icon: Zap },
   { label: 'Orders', path: '/orders', icon: ClipboardList },
   { label: 'Updates', path: '/dashboard', icon: Bell },
   { label: 'Management', path: '/management', icon: Users },

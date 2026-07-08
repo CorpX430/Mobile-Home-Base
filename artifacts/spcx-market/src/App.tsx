@@ -9,6 +9,7 @@ import Admin from './pages/Admin';
 import Management from './pages/Management';
 import Support from './pages/Support';
 import Orders from './pages/Orders';
+import IPOAccess from './pages/IPOAccess';
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ function Router() {
       <Route path="/management" component={Management} />
       <Route path="/support" component={Support} />
       <Route path="/orders" component={Orders} />
+      <Route path="/ipo-access" component={IPOAccess} />
       <Route>
         <div className="flex h-screen items-center justify-center font-display text-4xl text-white bg-[#050a0f]">404 NOT FOUND</div>
       </Route>
