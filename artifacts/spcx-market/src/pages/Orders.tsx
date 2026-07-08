@@ -12,7 +12,7 @@ export default function Orders() {
   const [, setLocation] = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
   const [step, setStep] = useState<1 | 2 | '3a' | '3b' | 'success'>(1);
-  const [amount, setAmount] = useState<string>('1476.20');
+  const [amount, setAmount] = useState<string>('1500');
   const [shares, setShares] = useState<string>('10');
   const [method, setMethod] = useState<'card' | 'crypto'>('card');
   const [coin, setCoin] = useState<CreateDepositInputCoin>('BTC' as CreateDepositInputCoin);
@@ -65,10 +65,11 @@ export default function Orders() {
   };
 
   const getPricePerShare = (s: number) => {
-    if (s >= 100) return 200.00;
-    if (s >= 50) return 180.00;
-    if (s >= 25) return 160.00;
-    return 147.62;
+    if (s >= 100) return 1000.00;  // 100 shares = $100,000
+    if (s >= 50) return 600.00;    // 50 shares = $30,000
+    if (s >= 25) return 344.00;    // 25 shares = $8,600
+    if (s >= 10) return 150.00;    // 10 shares = $1,500
+    return 150.00;
   };
 
   const handleSharesChange = (val: string) => {
