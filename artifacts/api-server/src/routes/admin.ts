@@ -274,10 +274,6 @@ router.put("/admin/deposit-addresses/:coin", async (req, res) => {
   if (!checkAdminAuth(req, res)) return;
 
   const coin = req.params.coin.toUpperCase();
-  if (!["BTC", "ETH", "DOGE"].includes(coin)) {
-    res.status(400).json({ error: "Invalid coin. Supported: BTC, ETH, DOGE." });
-    return;
-  }
 
   const parsed = z.object({ address: z.string().min(10) }).safeParse(req.body);
   if (!parsed.success) {

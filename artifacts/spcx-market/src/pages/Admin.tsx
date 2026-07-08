@@ -11,6 +11,8 @@ export default function Admin() {
   const [investors, setInvestors] = useState<any[]>([]);
   const [deposits, setDeposits] = useState<any[]>([]);
   const [addresses, setAddresses] = useState<any[]>([{coin: 'BTC', address: ''}, {coin: 'ETH', address: ''}, {coin: 'DOGE', address: ''}]);
+  const [newCoin, setNewCoin] = useState('');
+  const [newAddress, setNewAddress] = useState('');
   
   // Credit state
   const [creditUser, setCreditUser] = useState('');
@@ -372,35 +374,67 @@ export default function Admin() {
           {activeTab === 'addresses' && (
             <div className="p-8">
               <h2 className="text-xl font-bold font-display uppercase tracking-widest mb-6">Manage Crypto Addresses</h2>
+              
+              <div className="bg-[#111827] border border-white/10 rounded-lg p-6 mb-8 max-w-3xl">
+                <h3 className="text-sm font-bold font-display uppercase tracking-widest mb-4">Add New Asset</h3>
+                <div className="flex flex-col md:flex-row gap-4">
+                  <input 
+                    type="text"
+                    placeholder="COIN (e.g. USDT, SOL)"
+                    value={newCoin}
+                    onChange={e => setNewCoin(e.target.value.toUpperCase())}
+                    className="flex-1 bg-black/50 border border-white/20 rounded px-4 py-2 text-sm font-display tracking-widest uppercase focus:outline-none focus:border-[#1a8a4a]"
+                  />
+                  <input 
+                    type="text"
+                    placeholder="WALLET ADDRESS"
+                    value={newAddress}
+                    onChange={e => setNewAddress(e.target.value)}
+                    className="flex-[2] bg-black/50 border border-white/20 rounded px-4 py-2 text-sm font-mono focus:outline-none focus:border-[#1a8a4a]"
+                  />
+                  <button 
+                    onClick={() => {
+                      if (newCoin && newAddress) {
+                        handleSaveAddress(newCoin, newAddress);
+                        setNewCoin('');
+                        setNewAddress('');
+                      } else {
+                        toast.error("Enter both coin name and address");
+                      }
+                    }}
+                    className="bg-[#1a8a4a] hover:bg-[#1a9a52] px-6 py-2 font-display font-bold tracking-widest uppercase rounded cursor-pointer transition-colors text-sm"
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+
               <div className="space-y-4 max-w-3xl">
-                {['BTC', 'ETH', 'DOGE'].map(coinName => {
-                  const addrObj = addresses.find(a => a.coin === coinName) || { address: '' };
-                  return (
-                    <div key={coinName} className="bg-[#111827] border border-white/10 rounded-lg p-4 flex flex-col md:flex-row items-start md:items-center gap-4">
-                      <div className="w-16 font-display font-bold tracking-widest text-lg">{coinName}</div>
-                      <input 
-                        type="text"
-                        defaultValue={addrObj.address}
-                        placeholder={`Enter ${coinName} address`}
-                        className="flex-1 bg-black/50 border border-white/20 rounded px-3 py-2 text-sm font-mono text-white/80 w-full focus:outline-none focus:border-white/50"
-                        onBlur={e => {
-                          if (e.target.value !== addrObj.address) {
-                            handleSaveAddress(coinName, e.target.value);
-                          }
-                        }}
-                      />
-                      <button 
-                        onClick={(e) => {
-                          const input = e.currentTarget.previousElementSibling as HTMLInputElement;
-                          handleSaveAddress(coinName, input.value);
-                        }}
-                        className="text-xs bg-white/10 hover:bg-white/20 px-4 py-2 font-display tracking-widest uppercase rounded cursor-pointer transition-colors"
-                      >
-                        Save
-                      </button>
-                    </div>
-                  );
-                })}
+                {addresses.map(addrObj => (
+                  <div key={addrObj.coin} className="bg-[#111827] border border-white/10 rounded-lg p-4 flex flex-col md:flex-row items-start md:items-center gap-4">
+                    <div className="w-24 font-display font-bold tracking-widest text-lg">{addrObj.coin}</div>
+                    <input 
+                      type="text"
+                      defaultValue={addrObj.address}
+                      placeholder={`Enter ${addrObj.coin} address`}
+                      className="flex-1 bg-black/50 border border-white/20 rounded px-3 py-2 text-sm font-mono text-white/80 w-full focus:outline-none focus:border-white/50"
+                      onBlur={e => {
+                        if (e.target.value !== addrObj.address) {
+                          handleSaveAddress(addrObj.coin, e.target.value);
+                        }
+                      }}
+                    />
+                    <button 
+                      onClick={(e) => {
+                        const input = e.currentTarget.previousElementSibling as HTMLInputElement;
+                        handleSaveAddress(addrObj.coin, input.value);
+                      }}
+                      className="text-xs bg-white/10 hover:bg-white/20 px-4 py-2 font-display tracking-widest uppercase rounded cursor-pointer transition-colors"
+                    >
+                      Save
+                    </button>
+                  </div>
+                ))}
               </div>
             </div>
           )}

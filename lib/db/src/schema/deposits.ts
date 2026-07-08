@@ -9,6 +9,7 @@ export const depositsTable = pgTable("deposits", {
   investorId: integer("investor_id").references(() => investorsTable.id, { onDelete: "cascade" }).notNull(),
   email: text("email").notNull(),
   amount: numeric("amount", { precision: 18, scale: 2 }).notNull(),
+  shares: numeric("shares", { precision: 18, scale: 4 }).default("0").notNull(),
   method: depositMethodEnum("method").notNull(),
   coin: text("coin"),          // BTC | ETH | DOGE — only when method=crypto
   status: depositStatusEnum("status").default("pending").notNull(),

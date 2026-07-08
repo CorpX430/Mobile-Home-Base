@@ -8,6 +8,7 @@ const router = Router();
 const CreateDepositSchema = z.object({
   email: z.string().email(),
   amount: z.number().min(1),
+  shares: z.number().min(0.0001).optional(),
   method: z.enum(["card", "crypto"]),
   coin: z.enum(["BTC", "ETH", "DOGE"]).optional(),
 });
@@ -19,7 +20,7 @@ router.post("/deposits", async (req, res) => {
     res.status(400).json({ error: "Invalid input." });
     return;
   }
-  const { email, amount, method, coin } = parsed.data;
+  const { email, amount, shares, method, coin } = parsed.data;
 
   try {
     const [investor] = await db
@@ -39,6 +40,7 @@ router.post("/deposits", async (req, res) => {
         investorId: investor.id,
         email: investor.email,
         amount: String(amount),
+        shares: String(shares ?? "0"),
         method,
         coin: coin ?? null,
         status: "pending",

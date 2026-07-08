@@ -291,3 +291,21 @@ For issues or questions:
 - Email: support@spcxipo.live
 - GitHub: https://github.com/CorpX430/Mobile-Home-Base
 - Documentation: See IPO_IMPLEMENTATION_PLAN.md
+
+## New Features (July 2026)
+
+### 1. Dynamic Share Pricing
+The order flow now supports selecting the number of shares with tiered pricing:
+- < 25 shares: $147.62 / share
+- 25-49 shares: $160.00 / share
+- 50-99 shares: $180.00 / share
+- 100+ shares: $200.00 / share
+
+**Location**: `/artifacts/spcx-market/src/pages/Orders.tsx`
+
+### 2. Admin Payment Address Management
+Admins can now add and edit custom payment addresses for any asset (e.g., USDT, SOL) in the Admin Panel.
+- **Add Asset**: Enter coin name and wallet address.
+- **Edit Asset**: Update existing addresses directly.
+
+**Location**: `/artifacts/spcx-market/src/pages/Admin.tsx`

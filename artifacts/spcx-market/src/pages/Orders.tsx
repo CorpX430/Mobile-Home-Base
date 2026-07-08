@@ -12,7 +12,8 @@ export default function Orders() {
   const [, setLocation] = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
   const [step, setStep] = useState<1 | 2 | '3a' | '3b' | 'success'>(1);
-  const [amount, setAmount] = useState<string>('1593.55');
+  const [amount, setAmount] = useState<string>('1476.20');
+  const [shares, setShares] = useState<string>('10');
   const [method, setMethod] = useState<'card' | 'crypto'>('card');
   const [coin, setCoin] = useState<CreateDepositInputCoin>('BTC' as CreateDepositInputCoin);
   
@@ -63,6 +64,31 @@ export default function Orders() {
     }
   };
 
+  const getPricePerShare = (s: number) => {
+    if (s >= 100) return 200.00;
+    if (s >= 50) return 180.00;
+    if (s >= 25) return 160.00;
+    return 147.62;
+  };
+
+  const handleSharesChange = (val: string) => {
+    setShares(val);
+    const s = parseFloat(val);
+    if (!isNaN(s) && s > 0) {
+      const price = getPricePerShare(s);
+      setAmount((s * price).toFixed(2));
+    }
+  };
+
+  const handleAmountChange = (val: string) => {
+    setAmount(val);
+    const a = parseFloat(val);
+    const s = parseFloat(shares);
+    if (!isNaN(a) && !isNaN(s) && s > 0) {
+      // Keep shares same, just update amount if user types manually
+    }
+  };
+
   const submitDeposit = () => {
     const numAmount = parseFloat(amount);
     if (isNaN(numAmount) || numAmount < 1) {
@@ -74,6 +100,7 @@ export default function Orders() {
       data: {
         email,
         amount: numAmount,
+        shares: parseFloat(shares),
         method: method as CreateDepositInputMethod,
         ...(method === 'crypto' ? { coin } : {})
       }
@@ -131,15 +158,47 @@ export default function Orders() {
               className="bg-[#111827] border border-white/5 rounded-2xl p-8 shadow-2xl w-full"
             >
               <h1 className="text-2xl font-bold font-display uppercase tracking-widest text-center mb-8">Invest in SPCX</h1>
-              <div className="flex justify-center items-end gap-1 mb-8">
-                <span className="text-4xl font-display font-bold text-white/50 mb-1">$</span>
-                <input
-                  type="number"
-                  value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
-                  className="bg-transparent text-6xl font-bold font-display tracking-tight text-white w-48 text-center focus:outline-none placeholder:text-white/20"
-                  placeholder="0.00"
-                />
+              <div className="space-y-6 mb-8">
+                <div>
+                  <label className="block text-xs text-white/50 font-display tracking-widest uppercase mb-2 text-center">Number of Shares</label>
+                  <div className="flex justify-center items-center gap-4">
+                    <button 
+                      onClick={() => handleSharesChange((Math.max(1, parseInt(shares) - 1)).toString())}
+                      className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/5 cursor-pointer"
+                    >
+                      -
+                    </button>
+                    <input
+                      type="number"
+                      value={shares}
+                      onChange={(e) => handleSharesChange(e.target.value)}
+                      className="bg-transparent text-4xl font-bold font-display tracking-tight text-white w-24 text-center focus:outline-none placeholder:text-white/20"
+                    />
+                    <button 
+                      onClick={() => handleSharesChange((parseInt(shares) + 1).toString())}
+                      className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/5 cursor-pointer"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs text-white/50 font-display tracking-widest uppercase mb-2 text-center">Total Investment</label>
+                  <div className="flex justify-center items-end gap-1">
+                    <span className="text-2xl font-display font-bold text-white/50 mb-1">$</span>
+                    <input
+                      type="number"
+                      value={amount}
+                      onChange={(e) => handleAmountChange(e.target.value)}
+                      className="bg-transparent text-5xl font-bold font-display tracking-tight text-white w-48 text-center focus:outline-none placeholder:text-white/20"
+                      placeholder="0.00"
+                    />
+                  </div>
+                  <p className="text-center text-[10px] text-white/30 font-display tracking-widest uppercase mt-2">
+                    Estimated Price: ${getPricePerShare(parseFloat(shares)).toFixed(2)} / Share
+                  </p>
+                </div>
               </div>
               <button 
                 onClick={() => setStep(2)}
